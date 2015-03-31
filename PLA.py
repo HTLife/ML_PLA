@@ -2,11 +2,13 @@
 import numpy as np
 
 import matplotlib.pyplot as plt
+from matplotlib.animation import ArtistAnimation
 
-def plot(w_vector, data_x, data_y, name):
+def plot(w_vector, data_x, data_y, name):    
     fig = plt.figure()
 
     ax = fig.add_subplot(111)
+    ax.axis([-10, 100, -10, 100])
     #ax.margins(y=.1)
     
     
@@ -28,14 +30,17 @@ def plot(w_vector, data_x, data_y, name):
             line_y.append(((-1)*threshold - w_vector[1]*x_tmp) / float(w_vector[2]))
         except:
             line_y.append(0)
-    print(str(line_x) + str(line_y))
+    #print(str(line_x) + str(line_y))
     #plt.plot(line_p1, line_p2, 'k-')
 
-    plt.plot(line_x, line_y, 'k-')
+    plot_result = plt.plot(line_x, line_y, 'k-')
+    plt.title('step ' + name)
     
-    ax.axis([-10, 100, -10, 100])
+    
     #plt.show()
     plt.savefig(name + '.png')
+    
+    return plot_result
     
 
 def h(w_vector, data_x):
@@ -52,20 +57,18 @@ def update_w_vector(w_vector, data_x, data_y):
 
 def pla(w_vector, data_x, data_y):
     flag = 0
-    update_count = 0
+    update_count = 1
     while flag != 1:
         flag = 1
         for i in range(0, len(data_x)):
-            print(str(i) + ':'),
             if h(w_vector, data_x[i]) != data_y[i]:
-                print('update'),
+                print(str(update_count) + ' update')
                 update_w_vector(w_vector, data_x[i], data_y[i])
-                print(w_vector)
+                print('\t' + str(w_vector))
                 flag = 0
+                plot(w_vector, data_x, data_y, '{0:02d}'.format(update_count))
                 update_count += 1
-                plot(w_vector, data_x, data_y, str(update_count))
-            else:
-                print('Do nothing')
+                
     print('Update count = ' + str(update_count))
             
 
@@ -74,8 +77,8 @@ def main():
     #data = [[10, 60, 1], [20, 70, 1], [60, 30, -1], [30, 10, -1]]
     data_x = [i[:2] for i in data]
     data_y = [i[-1] for i in data]
-    print(data_x)
-    print(data_y)
+    print('Data point:' + str(data_x))
+    print('Type:' + str(data_y))
     
     w_vector = [-1, 0, 0]
     
