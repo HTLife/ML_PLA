@@ -4,23 +4,22 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def main():
-    pair_o = [[10, 60], [20, 70]]
-    pair_x = [[10, 30], [30, 10]]
+    pair = [[10, 60, 1], [20, 70, 1], [10, 30, -1], [30, 10, -10]]
 
     fig = plt.figure()
 
     ax = fig.add_subplot(111)
     #ax.margins(y=.1)
     
-    x = [int(i[0]) for i in pair_o]
-    y = [int(i[1]) for i in pair_o]
-    ax.scatter(x, y, color='red', marker='o', s=100)
-
-    x = [int(i[0]) for i in pair_x]
-    y = [int(i[1]) for i in pair_x]
-    ax.scatter(x, y, color='blue', marker='^', s=100)
-
-    #plt.scatter(px, py)
+    
+    for point in pair:
+        x = point[0]
+        y = point[1]
+        if point[2] > 0:
+            ax.scatter(x, y, color='red', marker='o', s=100)
+        else:
+            ax.scatter(x, y, color='blue', marker='^', s=100)
+    
     plt.axis([0, 100, 0, 100])
     plt.show()
 
