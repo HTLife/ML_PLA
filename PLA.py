@@ -8,7 +8,7 @@ def plot(w_vector, data_x, data_y, name):
     fig = plt.figure()
 
     ax = fig.add_subplot(111)
-    ax.axis([-10, 100, -10, 100])
+    ax.axis([-0, 1, -0, 1])
     #ax.margins(y=.1)
     
     
@@ -44,7 +44,7 @@ def plot(w_vector, data_x, data_y, name):
     
 
 def h(w_vector, data_x):
-    if np.dot(w_vector[1:], data_x) + w_vector[0] >= 0:
+    if np.dot(w_vector[1:], data_x) + w_vector[0] > 0:
         return 1
     else:
         return -1
@@ -62,25 +62,33 @@ def pla(w_vector, data_x, data_y):
         flag = 1
         for i in range(0, len(data_x)):
             if h(w_vector, data_x[i]) != data_y[i]:
-                print(str(update_count) + ' update')
+                #print(str(update_count) + ' update')
                 update_w_vector(w_vector, data_x[i], data_y[i])
-                print('\t' + str(w_vector))
+                #print('\t' + str(w_vector))
                 flag = 0
-                plot(w_vector, data_x, data_y, '{0:02d}'.format(update_count))
+                #plot(w_vector, data_x, data_y, '{0:02d}'.format(update_count))
                 update_count += 1
                 
     print('Update count = ' + str(update_count))
             
 
 def main():
-    data = [[10, 60, 1], [20, 70, 1], [10, 30, -1], [30, 10, -1]]
-    #data = [[10, 60, 1], [20, 70, 1], [60, 30, -1], [30, 10, -1]]
-    data_x = [i[:2] for i in data]
-    data_y = [i[-1] for i in data]
-    print('Data point:' + str(data_x))
-    print('Type:' + str(data_y))
+    data = []
     
-    w_vector = [-1, 0, 0]
+    f = open("train.dat", "r")
+    for line in f:
+        floats = [float(x) for x in line.split()]
+        data.append(floats)
+    
+    
+    #data = [[10, 60, 1], [20, 70, 1], [10, 30, -1], [30, 10, -1]]
+    #data = [[10, 60, 1], [20, 70, 1], [60, 30, -1], [30, 10, -1]]
+    data_x = [i[:4] for i in data]
+    data_y = [i[-1] for i in data]
+    print('Data point:' + str(data_x[0]))
+    print('Type:' + str(data_y[0]))
+    
+    w_vector = [-1, 0, 0, 0, 0]
     
     pla(w_vector, data_x, data_y)
     
